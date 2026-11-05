@@ -358,3 +358,4 @@ img, video { display: block; max-width: 100%; }
 @media (max-width: 640px) { .c1 { left: -10px; top: 40px; width: 56px; } .c2 { right: -10px; width: 56px; } }
 @media (prefers-reduced-motion: reduce) { .cloud { animation: none; } }
 [hidden] { display: none !important; }
+.awards { margin: 12px 0 4px; font-size: 15px; font-weight: 600; }
