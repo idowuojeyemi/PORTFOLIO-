@@ -238,8 +238,62 @@ img, video { display: block; max-width: 100%; }
 .contact-title { display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(10px, 2vw, 22px); font-size: clamp(44px, 8vw, 116px); }
 .copy-btn.done { background: var(--green); color: #fff; }
 
-.footer { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 24px var(--gutter); border-top: 2px dashed var(--dash); font-family: var(--mono); font-size: 12px; letter-spacing: .08em; color: var(--muted); }
-.footer a:hover { color: var(--ink); }
+.footer { margin-top: 40px; color: var(--ink); }
+.foot-top { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 0 var(--gutter) 18px; font-family: var(--mono); font-size: 12px; letter-spacing: .08em; color: var(--muted); }
+.foot-top a:hover { color: var(--ink); }
+
+/* film strip + rolling camera */
+.strip {
+  position: relative; height: 40px; margin-top: 48px;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 10px, var(--bg) 10px 24px, transparent 24px 34px) 0 7px / 100% 9px no-repeat,
+    repeating-linear-gradient(90deg, transparent 0 10px, var(--bg) 10px 24px, transparent 24px 34px) 0 24px / 100% 9px no-repeat,
+    var(--ink);
+}
+.walker { position: absolute; bottom: 100%; left: 0; animation: roll 26s linear infinite; image-rendering: pixelated; }
+.leg { animation: step .4s steps(1) infinite; }
+.l2 { animation-delay: .2s; }
+@keyframes step { 50% { transform: translateY(-1px); } }
+@keyframes roll {
+  0% { translate: -70px 0; scale: 1 1; }
+  49.9% { translate: calc(100vw + 10px) 0; scale: 1 1; }
+  50% { translate: calc(100vw + 10px) 0; scale: -1 1; }
+  100% { translate: -70px 0; scale: -1 1; }
+}
+
+/* the wall */
+.wall { padding: 44px var(--gutter) 60px; }
+.wall-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; max-width: 1180px; margin: 0 auto; }
+.wall-head .mono { color: var(--muted); font-size: 11px; }
+.wall-head h2 { margin-top: 10px; font-size: clamp(26px, 3vw, 36px); letter-spacing: -0.03em; }
+.wall-status { margin: 8px 0 0; font-size: 14px; color: var(--muted); }
+.wall-head .btn { padding: 11px 20px; font-size: 15px; }
+
+.pad { max-width: 1180px; margin: 24px auto 0; padding: 18px; background: var(--paper); border: 2px solid var(--line); border-radius: 18px; box-shadow: 0 6px 0 var(--shadow); }
+.pad[hidden] { display: none; }
+.pad-canvas-wrap { position: relative; }
+.pad-canvas { display: block; width: 100%; aspect-ratio: 560 / 180; height: auto; background: #fbf9f4; border: 2px dashed var(--dash); border-radius: 12px; touch-action: none; cursor: crosshair; }
+.pad-hint { position: absolute; left: 0; top: 50%; width: 100%; translate: 0 -50%; text-align: center; font-family: var(--mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #9a948a; pointer-events: none; }
+.pad.drawn .pad-hint { display: none; }
+.pad-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 14px; }
+.swatches { display: flex; gap: 6px; }
+.swatch { width: 28px; height: 28px; border-radius: 50%; background: var(--s); border: 3px solid var(--paper); outline: 2px solid transparent; padding: 0; }
+.swatch.on { outline-color: var(--line); }
+.pad-name { flex: 1 1 180px; min-width: 0; height: 46px; padding: 0 14px; border: 2px solid var(--line); border-radius: 99px; background: var(--bg); color: var(--ink); font: inherit; font-size: 15px; }
+.pad-controls .btn { padding: 10px 18px; font-size: 15px; }
+
+.wall-row { display: flex; gap: 14px; list-style: none; margin: 24px auto 0; padding: 10px 4px 18px; max-width: 1180px; overflow-x: auto; scroll-snap-type: x proximity; }
+.wall-row:empty::before { content: "No autographs yet. Be the first to sign."; font-family: var(--mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); padding: 30px 0; }
+.sig {
+  flex: none; width: 172px; padding: 10px 10px 8px; scroll-snap-align: start;
+  background: #f6f2ea; border: 2px solid #141210; border-radius: 12px; box-shadow: 0 4px 0 var(--shadow);
+  transform: rotate(var(--r, 0deg)); transition: transform .3s cubic-bezier(.3,1.6,.5,1);
+}
+.sig:hover { transform: rotate(0deg) translateY(-4px); }
+.sig.mine { border-color: var(--orange); }
+.sig svg { display: block; width: 100%; height: 62px; }
+.sig span { display: block; margin-top: 4px; text-align: center; font-family: var(--mono); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: #5e5952; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@media (prefers-reduced-motion: reduce) { .walker, .leg { animation: none; } .walker { left: 20px; } }
 
 /* REVEAL */
 [data-reveal] { opacity: 0; translate: 0 30px; transition: opacity .8s ease, translate .8s cubic-bezier(.2,.7,.2,1), transform .35s cubic-bezier(.3,1.5,.5,1); }
@@ -303,3 +357,4 @@ img, video { display: block; max-width: 100%; }
 .sign-ic { font-size: .62em; }
 @media (max-width: 640px) { .c1 { left: -10px; top: 40px; width: 56px; } .c2 { right: -10px; width: 56px; } }
 @media (prefers-reduced-motion: reduce) { .cloud { animation: none; } }
+[hidden] { display: none !important; }

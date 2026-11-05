@@ -57,3 +57,135 @@ copyBtn.addEventListener('click', async () => {
 });
 
 document.querySelector('[data-year]').textContent = new Date().getFullYear();
+
+/* ---------- Sign the wall ----------
+   Signatures are stored with wallStore. Right now that is the visitor's own
+   browser (localStorage), so each visitor sees only their own autograph.
+   To make the wall shared, swap load/save for calls to a small backend
+   (e.g. Supabase or Firebase) and keep the same data shape:
+   { name, color, paths: ["M x y L x y ...", ...], at } */
+const wallStore = {
+  key: 'wall-signatures',
+  load() {
+    try { return JSON.parse(localStorage.getItem(this.key)) || []; } catch (e) { return []; }
+  },
+  save(list) {
+    try { localStorage.setItem(this.key, JSON.stringify(list.slice(-50))); } catch (e) {}
+  },
+};
+
+(() => {
+  const row = document.querySelector('.wall-row');
+  const pad = document.querySelector('.pad');
+  const openBtn = document.querySelector('.sign-open');
+  const status = document.querySelector('.wall-status');
+  const canvas = pad.querySelector('.pad-canvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  let color = '#4a955e';
+  let strokes = [];
+  let current = null;
+
+  const tilt = () => `${(Math.random() * 4 - 2).toFixed(1)}deg`;
+  const card = (sig, mine) => {
+    const li = document.createElement('li');
+    li.className = 'sig' + (mine ? ' mine' : '');
+    li.style.setProperty('--r', tilt());
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+    svg.setAttribute('role', 'img');
+    svg.setAttribute('aria-label', `Signature by ${sig.name || 'Anonymous'}`);
+    sig.paths.forEach((d) => {
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', d);
+      path.setAttribute('fill', 'none');
+      path.setAttribute('stroke', sig.color);
+      path.setAttribute('stroke-width', '7');
+      path.setAttribute('stroke-linecap', 'round');
+      path.setAttribute('stroke-linejoin', 'round');
+      svg.appendChild(path);
+    });
+    const name = document.createElement('span');
+    name.textContent = sig.name || 'Anonymous';
+    li.append(svg, name);
+    return li;
+  };
+
+  const render = () => {
+    row.replaceChildren(...wallStore.load().slice().reverse().map((s, i) => card(s, i === 0 && s.mine)));
+  };
+
+  // drawing
+  const point = (e) => {
+    const r = canvas.getBoundingClientRect();
+    return [Math.round(((e.clientX - r.left) / r.width) * W), Math.round(((e.clientY - r.top) / r.height) * H)];
+  };
+  const redraw = () => {
+    ctx.clearRect(0, 0, W, H);
+    ctx.lineWidth = 7; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = color;
+    strokes.forEach((s) => {
+      ctx.beginPath();
+      s.forEach(([x, y], i) => (i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)));
+      if (s.length === 1) ctx.lineTo(s[0][0] + 0.1, s[0][1]);
+      ctx.stroke();
+    });
+  };
+  canvas.addEventListener('pointerdown', (e) => {
+    canvas.setPointerCapture(e.pointerId);
+    current = [point(e)];
+    strokes.push(current);
+    pad.classList.add('drawn');
+    redraw();
+  });
+  canvas.addEventListener('pointermove', (e) => {
+    if (!current) return;
+    const [x, y] = point(e);
+    const [lx, ly] = current[current.length - 1];
+    if (Math.abs(x - lx) + Math.abs(y - ly) > 2) { current.push([x, y]); redraw(); }
+  });
+  const end = () => { current = null; };
+  canvas.addEventListener('pointerup', end);
+  canvas.addEventListener('pointercancel', end);
+
+  const clear = () => { strokes = []; pad.classList.remove('drawn'); redraw(); };
+  pad.querySelector('.pad-clear').addEventListener('click', clear);
+
+  pad.querySelectorAll('.swatch').forEach((sw) => sw.addEventListener('click', () => {
+    pad.querySelectorAll('.swatch').forEach((o) => { o.classList.remove('on'); o.setAttribute('aria-checked', 'false'); });
+    sw.classList.add('on'); sw.setAttribute('aria-checked', 'true');
+    color = getComputedStyle(sw).getPropertyValue('--s').trim();
+    redraw();
+  }));
+
+  openBtn.addEventListener('click', () => {
+    pad.hidden = false;
+    openBtn.hidden = true;
+    pad.querySelector('.pad-name').value = '';
+    clear();
+    status.textContent = 'Draw your signature, add your name, then hit Sign.';
+  });
+
+  pad.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!strokes.length) { status.textContent = 'Draw something first ✍️'; return; }
+    const sig = {
+      name: pad.querySelector('.pad-name').value.trim().slice(0, 24),
+      color,
+      paths: strokes.map((s) => s.map(([x, y], i) => `${i ? 'L' : 'M'}${x} ${y}`).join(' ')),
+      at: Date.now(),
+      mine: true,
+    };
+    const list = wallStore.load();
+    list.push(sig);
+    wallStore.save(list);
+    render();
+    row.scrollTo({ left: 0, behavior: 'smooth' });
+    pad.hidden = true;
+    openBtn.hidden = false;
+    openBtn.textContent = 'Sign again';
+    status.textContent = "Thanks! You're on the wall.";
+  });
+
+  render();
+})();

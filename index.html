@@ -315,8 +315,54 @@
   </main>
 
   <footer class="footer">
-    <span>© <span data-year>2026</span> Idowu Ojeyemi · Made in Nigeria</span>
-    <a href="#top">Back to top ↑</a>
+    <div class="foot-top">
+      <span>© <span data-year>2026</span> Idowu Ojeyemi · Made in Nigeria</span>
+      <a href="#top">Back to top ↑</a>
+    </div>
+
+    <!-- film strip with a little camera rolling along it -->
+    <div class="strip" aria-hidden="true">
+      <svg class="walker" viewBox="0 0 16 12" width="64" height="48" shape-rendering="crispEdges">
+        <rect x="2" y="0" width="4" height="4" fill="#141210"/><rect x="3" y="1" width="2" height="2" fill="#db5a2b"/>
+        <rect x="7" y="0" width="4" height="4" fill="#141210"/><rect x="8" y="1" width="2" height="2" fill="#db5a2b"/>
+        <rect x="1" y="4" width="11" height="6" fill="#141210"/><rect x="2" y="5" width="9" height="4" fill="#db5a2b"/>
+        <rect x="3" y="6" width="2" height="1" fill="#f6f2ea"/>
+        <rect x="12" y="5" width="3" height="4" fill="#141210"/><rect x="13" y="6" width="2" height="2" fill="#8fb0e0"/>
+        <rect x="2" y="10" width="2" height="2" fill="#141210" class="leg l1"/><rect x="8" y="10" width="2" height="2" fill="#141210" class="leg l2"/>
+      </svg>
+    </div>
+
+    <section class="wall" aria-labelledby="wall-title">
+      <div class="wall-head">
+        <div>
+          <p class="mono">THE WALL</p>
+          <h2 id="wall-title">That's a wrap. Sign the wall.</h2>
+          <p class="wall-status" aria-live="polite">Leave your autograph before you roll out.</p>
+        </div>
+        <button class="btn btn-orange sign-open">Sign the wall</button>
+      </div>
+
+      <form class="pad" hidden>
+        <div class="pad-canvas-wrap">
+          <canvas class="pad-canvas" width="1120" height="360" aria-label="Signature pad: draw your signature here"></canvas>
+          <span class="pad-hint">Draw your signature here</span>
+        </div>
+        <div class="pad-controls">
+          <div class="swatches" role="radiogroup" aria-label="Ink colour">
+            <button type="button" class="swatch on" style="--s:#4a955e" aria-label="Green" aria-checked="true" role="radio"></button>
+            <button type="button" class="swatch" style="--s:#db5a2b" aria-label="Orange" aria-checked="false" role="radio"></button>
+            <button type="button" class="swatch" style="--s:#4763d6" aria-label="Blue" aria-checked="false" role="radio"></button>
+            <button type="button" class="swatch" style="--s:#c0432c" aria-label="Red" aria-checked="false" role="radio"></button>
+            <button type="button" class="swatch" style="--s:#141210" aria-label="Black" aria-checked="false" role="radio"></button>
+          </div>
+          <input class="pad-name" type="text" maxlength="24" placeholder="Your name (optional)" aria-label="Your name">
+          <button type="button" class="btn btn-paper pad-clear">Clear</button>
+          <button type="submit" class="btn btn-orange pad-save">Sign</button>
+        </div>
+      </form>
+
+      <ul class="wall-row" aria-label="Signatures"></ul>
+    </section>
   </footer>
 
   <script src="script.js"></script>
