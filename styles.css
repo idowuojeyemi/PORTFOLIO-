@@ -151,7 +151,7 @@ img, video { display: block; max-width: 100%; }
 }
 .reel-card:first-child { margin-top: 0; }
 .tab {
-  position: absolute; top: 0; left: calc(var(--i) * 16.4%);
+  position: absolute; top: 0; left: calc(var(--i) * 24%);
   display: flex; align-items: center; gap: 10px; height: 57px; padding: 0 38px 0 16px;
   background: var(--c); color: var(--ink);
   clip-path: polygon(0 0, calc(100% - 34px) 0, 100% 100%, 0 100%);
