@@ -291,3 +291,53 @@ img, video { display: block; max-width: 100%; }
   .marquee-track, .rec { animation: none; }
   [data-reveal] { opacity: 1; translate: none; transition: none; }
 }
+
+/* EXPERIENCE: signpost */
+.signpost { position: relative; max-width: 620px; margin: 0 auto; padding: 46px 0 34px; }
+.pole {
+  position: absolute; left: 50%; top: 0; bottom: 18px; width: 14px; translate: -50% 0;
+  background: var(--ink); border-radius: 4px;
+}
+.pole::before { /* ring on top */
+  content: ""; position: absolute; left: 50%; top: -14px; width: 26px; height: 26px; translate: -50% 0;
+  border: 6px solid var(--ink); border-radius: 50%; background: var(--bg);
+}
+.base { position: absolute; left: 50%; bottom: 8px; width: 180px; height: 22px; translate: -50% 0; background: var(--ink); border-radius: 50%; }
+.cloud { position: absolute; width: 84px; color: var(--ink); animation: drift 9s ease-in-out infinite alternate; }
+.c1 { top: 120px; left: -40px; }
+.c2 { top: 330px; right: -50px; animation-delay: -4s; }
+@keyframes drift { to { translate: 24px 0; } }
+
+.signs { position: relative; list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 18px; }
+.sign {
+  position: relative; width: min(520px, 100%); margin: 0 auto; padding: 16px 64px 14px;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  background: var(--c); color: var(--t);
+  transform: translateX(var(--x)) rotate(var(--r)); transform-origin: 50% 0;
+  filter: drop-shadow(0 6px 0 var(--shadow));
+  transition: transform .5s cubic-bezier(.3,1.8,.4,1);
+}
+.sign:hover { transform: translateX(var(--x)) rotate(calc(var(--r) * -2.5)); }
+/* arrow-shaped boards, pointing alternately right and left */
+.sign-r { clip-path: polygon(0 6%, 2% 0, calc(100% - 40px) 0, 100% 50%, calc(100% - 40px) 100%, 2% 100%, 0 94%); border-radius: 6px; }
+.sign-l { clip-path: polygon(40px 0, 98% 0, 100% 6%, 100% 94%, 98% 100%, 40px 100%, 0 50%); border-radius: 6px; }
+.sign-name {
+  display: inline-flex; align-items: center; gap: 12px;
+  font-family: var(--display); font-weight: 800; letter-spacing: -0.03em; line-height: 1;
+  font-size: clamp(30px, 4.6vw, 48px);
+}
+.sign-ic { font-size: .6em; }
+.sign-role { margin-top: 8px; font-family: var(--mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; opacity: .85; }
+.sign[data-reveal] { translate: 0 30px; }
+.sign[data-reveal].in { translate: 0 0; }
+
+@media (max-width: 640px) {
+  .signpost { padding-inline: 4px; }
+  .sign { padding: 14px 46px 12px; transform: rotate(var(--r)); }
+  .sign:hover { transform: rotate(calc(var(--r) * -2.5)); }
+  .sign-r { clip-path: polygon(0 6%, 2% 0, calc(100% - 28px) 0, 100% 50%, calc(100% - 28px) 100%, 2% 100%, 0 94%); }
+  .sign-l { clip-path: polygon(28px 0, 98% 0, 100% 6%, 100% 94%, 98% 100%, 28px 100%, 0 50%); }
+  .sign-role { font-size: 10.5px; letter-spacing: .1em; }
+  .c1 { left: -20px; top: 60px; width: 60px; } .c2 { right: -20px; width: 60px; }
+}
+@media (prefers-reduced-motion: reduce) { .cloud { animation: none; } }
