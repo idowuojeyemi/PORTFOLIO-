@@ -275,13 +275,6 @@ img, video { display: block; max-width: 100%; }
 .xp-top h3 { font-size: clamp(30px, 4vw, 44px); }
 .xp-top .mono { color: var(--orange); margin-top: 8px; }
 .ogilvy { margin-top: 0; }
-.xp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; max-width: 760px; margin: 22px auto 0; }
-.xp { padding: 22px; background: var(--c); color: #141210; border-radius: 16px; box-shadow: 0 6px 0 var(--shadow); }
-.xp:nth-child(1) { color: #fff; }
-.xp h3 { font-size: 30px; }
-.xp .mono { margin-top: 8px; font-size: 11px; opacity: .85; }
-.xp p:last-child { margin: 10px 0 0; font-size: 15px; line-height: 1.45; }
-@media (max-width: 640px) { .xp-grid { grid-template-columns: 1fr; } }
 
 /* SIGNPOST (quick links) */
 .next-stop { padding: clamp(120px, 14vw, 200px) var(--gutter) 0; }
