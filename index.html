@@ -168,7 +168,7 @@
           </div>
         </article>
 
-        <article class="reel-card" style="--c:#ad9fe6;--ink:#141210;--i:1">
+        <article id="ai-videos" class="reel-card" style="--c:#ad9fe6;--ink:#141210;--i:1">
           <div class="tab"><svg width="16" height="16"><use href="#i-film"/></svg>02 · AI VIDEOS</div>
           <div class="card-body">
             <div class="card-copy">
@@ -246,39 +246,13 @@
     <section id="experience" class="experience">
       <div class="head">
         <h2 class="title"><svg width="56" height="56" style="color:#db5a2b"><use href="#i-case"/></svg>Where I've been.</h2>
-        <p class="mono">FOLLOW THE SIGNS</p>
+        <p class="mono">AND WHAT I DID THERE</p>
       </div>
-      <div class="signpost">
-        <span class="pole" aria-hidden="true"></span>
-        <svg class="cloud c1" viewBox="0 0 72 28" aria-hidden="true"><path d="M8 28a8 8 0 0 1 0-16 12 12 0 0 1 20-6 14 14 0 0 1 26 4 9 9 0 0 1 10 18z" fill="currentColor"/></svg>
-        <svg class="cloud c2" viewBox="0 0 72 28" aria-hidden="true"><path d="M8 28a8 8 0 0 1 0-16 12 12 0 0 1 20-6 14 14 0 0 1 26 4 9 9 0 0 1 10 18z" fill="currentColor"/></svg>
-        <ul class="signs">
-          <li class="sign sign-r" style="--c:#8fb0e0;--t:#141210;--r:-1.5deg;--x:-14px" data-reveal>
-            <span class="sign-name"><span class="sign-ic">◆</span>Ogilvy Nigeria</span>
-            <span class="sign-role">Junior Executive · Production</span>
-          </li>
-          <li class="sign sign-l" style="--c:#db5a2b;--t:#fff;--r:2deg;--x:26px" data-reveal>
-            <span class="sign-name"><span class="sign-ic">✷</span>GIGMOF</span>
-            <span class="sign-role">Class Governor 2026 · 60+ mentees</span>
-          </li>
-          <li class="sign sign-r" style="--c:#4a955e;--t:#fff;--r:-1deg;--x:-6px" data-reveal>
-            <span class="sign-name"><span class="sign-ic">●</span>CCHUB</span>
-            <span class="sign-role">Fellowship · Professional development</span>
-          </li>
-          <li class="sign sign-l" style="--c:#ad9fe6;--t:#141210;--r:1.5deg;--x:20px" data-reveal>
-            <span class="sign-name"><span class="sign-ic">▤</span>TASUED</span>
-            <span class="sign-role">B.Sc Educational Technology</span>
-          </li>
-          <li class="sign sign-r" style="--c:#e8c65e;--t:#141210;--r:-2deg;--x:-10px" data-reveal>
-            <span class="sign-name"><span class="sign-ic">★</span>What's next</span>
-            <span class="sign-role">Your project? ↓</span>
-          </li>
-        </ul>
-        <span class="base" aria-hidden="true"></span>
-      </div>
-
       <div class="ogilvy" data-reveal>
-        <p class="mono">AT OGILVY I…</p>
+        <div class="xp-top">
+          <h3>Ogilvy Nigeria</h3>
+          <p class="mono">JUNIOR EXECUTIVE · PRODUCTION DEPARTMENT</p>
+        </div>
         <ul>
           <li>Supported production management from pre-production to post-production</li>
           <li>Coordinated production vendors and external partners</li>
@@ -287,6 +261,11 @@
           <li>Edited video, motion graphics and post-production</li>
           <li>Worked with copywriters, directors and production managers</li>
         </ul>
+      </div>
+      <div class="xp-grid">
+        <div class="xp" style="--c:#4a955e" data-reveal><h3>GIGMOF</h3><p class="mono">CLASS GOVERNOR · 2026</p><p>School of Mentoring. Led a cohort of over 60 mentees.</p></div>
+        <div class="xp" style="--c:#e8c65e" data-reveal><h3>CCHUB</h3><p class="mono">FELLOWSHIP</p><p>Professional development fellowship.</p></div>
+        <div class="xp" style="--c:#ad9fe6" data-reveal><h3>TASUED</h3><p class="mono">B.SC EDUCATIONAL TECHNOLOGY</p><p>Tai Solarin University of Education.</p></div>
       </div>
     </section>
 
@@ -301,6 +280,29 @@
         <blockquote class="note" style="--r:1.8deg" data-reveal><p>Lead creative campaigns across Africa and beyond.</p><cite>GOAL · 02</cite></blockquote>
         <blockquote class="note" style="--r:-1deg" data-reveal><p>Build my own creative production company, with AI in the toolkit from day one.</p><cite>GOAL · 03</cite></blockquote>
       </div>
+    </section>
+
+    <!-- SIGNPOST -->
+    <section id="next-stop" class="next-stop">
+      <div class="head">
+        <h2 class="title">Where to next?</h2>
+        <p class="mono">FOLLOW THE SIGNS</p>
+      </div>
+      <nav class="signpost" aria-label="Quick links">
+        <span class="pole" aria-hidden="true"></span>
+        <svg class="cloud c1" viewBox="0 0 72 28" aria-hidden="true"><path d="M8 28a8 8 0 0 1 0-16 12 12 0 0 1 20-6 14 14 0 0 1 26 4 9 9 0 0 1 10 18z" fill="currentColor"/></svg>
+        <svg class="cloud c2" viewBox="0 0 72 28" aria-hidden="true"><path d="M8 28a8 8 0 0 1 0-16 12 12 0 0 1 20-6 14 14 0 0 1 26 4 9 9 0 0 1 10 18z" fill="currentColor"/></svg>
+        <ul class="signs">
+          <li><a class="sign board" href="#work" style="--c:#8fb0e0;--t:#141210;--r:-1.5deg;--x:-6px"><span class="sign-ic">◆</span>Work</a></li>
+          <li><a class="sign pill-sign" href="#ai-videos" style="--c:#db5a2b;--t:#fff;--r:2.5deg;--x:22px"><span class="sign-ic">✷</span>Playground</a></li>
+          <li><a class="sign board" href="#services" style="--c:#4a955e;--t:#fff;--r:-1deg;--x:2px"><span class="sign-ic">●</span>About</a></li>
+          <li><a class="sign pill-sign" href="assets/resume.pdf" target="_blank" rel="noopener" style="--c:#ad9fe6;--t:#141210;--r:2deg;--x:12px"><span class="sign-ic">▤</span>Resume</a></li>
+          <!-- Replace the two href="#" below with your LinkedIn and X profile links -->
+          <li><a class="sign board" href="#" target="_blank" rel="noopener" style="--c:#e8c65e;--t:#141210;--r:-1deg;--x:-4px"><span class="sign-ic">★</span>LinkedIn</a></li>
+          <li><a class="sign pill-sign" href="#" target="_blank" rel="noopener" style="--c:#c0432c;--t:#fff;--r:2deg;--x:16px"><span class="sign-ic">↗</span>X</a></li>
+        </ul>
+        <span class="base" aria-hidden="true"></span>
+      </nav>
     </section>
 
     <!-- CONTACT -->
