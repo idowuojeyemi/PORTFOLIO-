@@ -377,3 +377,8 @@ img, video { display: block; max-width: 100%; }
 .q-text { font-family: var(--sans); font-size: 14px; letter-spacing: 0; text-transform: none; }
 .q-text::before { content: "“"; } .q-text::after { content: "”"; }
 @media (max-width: 640px) { .hero .badge-quote { margin-top: 34px; } }
+
+/* hero intro */
+.hero-lead { max-width: 640px; margin: 48px auto 0; font-family: var(--display); font-weight: 700; font-size: clamp(22px, 2.4vw, 28px); line-height: 1.2; letter-spacing: -0.02em; }
+.hero-lead span { display: inline-block; color: var(--orange); }
+.hero-sub-tight { margin-top: 14px; }
