@@ -189,3 +189,34 @@ const wallStore = {
 
   render();
 })();
+
+/* ---------- Project video players (Google Drive embeds) ----------
+   A .screen with data-video="<Drive file id>" plays that file when clicked.
+   Buttons with .vid-chip in the same card switch which video plays.
+   The Drive files must be shared as "Anyone with the link can view". */
+(() => {
+  const play = (screen, id, title) => {
+    screen.dataset.video = id;
+    screen.dataset.title = title;
+    screen.querySelector('iframe')?.remove();
+    const f = document.createElement('iframe');
+    f.src = `https://drive.google.com/file/d/${id}/preview`;
+    f.allow = 'autoplay; fullscreen';
+    f.allowFullscreen = true;
+    f.title = title;
+    screen.appendChild(f);
+    screen.classList.add('playing');
+  };
+  document.querySelectorAll('.screen[data-video]').forEach((screen) => {
+    const card = screen.closest('.reel-card');
+    const chips = card.querySelectorAll('.vid-chip');
+    const label = screen.querySelector('.screen-tc');
+    screen.querySelector('.play-btn')?.addEventListener('click', () => play(screen, screen.dataset.video, screen.dataset.title));
+    chips.forEach((chip, i) => chip.addEventListener('click', () => {
+      chips.forEach((c) => c.classList.remove('on'));
+      chip.classList.add('on');
+      if (label) label.textContent = `${String(i + 1).padStart(2, '0')} / ${String(chips.length).padStart(2, '0')} · ${chip.dataset.title}`;
+      play(screen, chip.dataset.video, chip.dataset.title);
+    }));
+  });
+})();

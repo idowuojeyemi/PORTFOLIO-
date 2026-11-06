@@ -359,3 +359,12 @@ img, video { display: block; max-width: 100%; }
 @media (prefers-reduced-motion: reduce) { .cloud { animation: none; } }
 [hidden] { display: none !important; }
 .awards { margin: 12px 0 4px; font-size: 15px; font-weight: 600; }
+
+/* video playlist */
+.play-btn { position: absolute; inset: 0; display: grid; place-items: center; background: none; border: 0; padding: 0; cursor: pointer; z-index: 1; }
+.screen iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; z-index: 2; background: #000; }
+.screen.playing .screen-tc { display: none; }
+.vid-chip { padding: 7px 12px; background: rgba(255,255,255,.92); color: #141210; border: 2px solid transparent; font-family: var(--mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; text-align: left; transition: transform .15s; }
+.vid-chip:hover { transform: translateY(-2px); }
+.vid-chip.on { background: #141210; color: #fff; }
+.playlist li { padding: 0; background: none; }
