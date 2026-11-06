@@ -220,3 +220,68 @@ const wallStore = {
     }));
   });
 })();
+
+/* ---------- Quote of the day ----------
+   One pool per weekday; the day of the year picks which quote shows,
+   so it changes every day and the same weekday rotates week to week. */
+(() => {
+  const el = document.querySelector('[data-quote]');
+  if (!el) return;
+  const quotes = {
+    Sunday: [
+      'Rest, rewatch, rethink.',
+      'Plotting next week’s big idea from the sofa.',
+      'Sunday is a slow fade. Enjoy it.',
+      'Watch a good film today. It counts as research.',
+      'Charging batteries. The camera’s and mine.',
+    ],
+    Monday: [
+      'Monday is just a rough cut of the week. We’ll fix it in post.',
+      'New week, new timeline. Hit record.',
+      'Coffee first. Then the client notes.',
+      'Every great film started on a Monday nobody wanted.',
+      'Monday mood: rendering… 3% complete.',
+    ],
+    Tuesday: [
+      'Tuesday is the B-roll of the week. Quietly holding everything together.',
+      'Ideas don’t wait for Friday. Neither do deadlines.',
+      'Today’s plan: fewer meetings, more frames.',
+      'If it’s not working, try a different angle. Literally.',
+      'Tuesday is Monday’s director’s cut. Slightly better.',
+    ],
+    Wednesday: [
+      'Halfway through the week. The plot thickens.',
+      'Wednesday: the mid-roll ad break of the week.',
+      'Hump day. Add a keyframe and push through.',
+      'Act two. This is where the good stuff happens.',
+      'Middle of the week, middle of the edit. Don’t panic.',
+    ],
+    Thursday: [
+      'Thursday is Friday’s trailer. The hype is real.',
+      'Almost there. Final render loading…',
+      'If the client says “one small change”, save a new version.',
+      'Good stories need a strong third act. So does this week.',
+      'Ctrl+S. Then Ctrl+S again. It’s Thursday, trust nothing.',
+    ],
+    Friday: [
+      'That’s a wrap. Mostly.',
+      'Export the week. No more revisions.',
+      'It’s Friday. Even the timeline is dancing.',
+      'final_final_v3_REALLY_FINAL.mp4. Happy Friday.',
+      'Wrap the shoot, cue the jollof.',
+    ],
+    Saturday: [
+      'Shooting for fun today, not for the client.',
+      'Weekend mode: passion projects only.',
+      'Saturdays are for side quests and short films.',
+      'No brief today. Just vibes and a camera.',
+      'Owambe season. Every party is a music video if you edit it right.',
+    ],
+  };
+  const now = new Date();
+  const day = now.toLocaleDateString('en-GB', { weekday: 'long' });
+  const pool = quotes[day] || quotes.Monday;
+  const dayOfYear = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 86400000);
+  el.querySelector('.q-day').textContent = `HAPPY ${day.toUpperCase()}`;
+  el.querySelector('.q-text').textContent = pool[dayOfYear % pool.length];
+})();

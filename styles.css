@@ -370,3 +370,10 @@ img, video { display: block; max-width: 100%; }
 .playlist li { padding: 0; background: none; }
 .playlist.long { max-height: 232px; overflow-y: auto; padding: 2px 8px 2px 0; overscroll-behavior: contain; scrollbar-width: thin; mask-image: linear-gradient(#000 85%, transparent); }
 .playlist.long li:last-child { margin-bottom: 26px; }
+
+/* quote of the day */
+.badge-quote { max-width: min(640px, 100%); flex-wrap: wrap; justify-content: center; gap: 6px 10px; padding: 9px 16px; border-radius: 10px; line-height: 1.4; }
+.q-day { color: var(--mustard); }
+.q-text { font-family: var(--sans); font-size: 14px; letter-spacing: 0; text-transform: none; }
+.q-text::before { content: "“"; } .q-text::after { content: "”"; }
+@media (max-width: 640px) { .hero .badge-quote { margin-top: 34px; } }
