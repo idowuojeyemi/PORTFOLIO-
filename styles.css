@@ -368,3 +368,5 @@ img, video { display: block; max-width: 100%; }
 .vid-chip:hover { transform: translateY(-2px); }
 .vid-chip.on { background: #141210; color: #fff; }
 .playlist li { padding: 0; background: none; }
+.playlist.long { max-height: 232px; overflow-y: auto; padding: 2px 8px 2px 0; overscroll-behavior: contain; scrollbar-width: thin; mask-image: linear-gradient(#000 85%, transparent); }
+.playlist.long li:last-child { margin-bottom: 26px; }
