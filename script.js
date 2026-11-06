@@ -59,18 +59,40 @@ copyBtn.addEventListener('click', async () => {
 document.querySelector('[data-year]').textContent = new Date().getFullYear();
 
 /* ---------- Sign the wall ----------
-   Signatures are stored with wallStore. Right now that is the visitor's own
-   browser (localStorage), so each visitor sees only their own autograph.
-   To make the wall shared, swap load/save for calls to a small backend
-   (e.g. Supabase or Firebase) and keep the same data shape:
-   { name, color, paths: ["M x y L x y ...", ...], at } */
+   Signatures are shared through /api/wall (a Vercel function backed by
+   Upstash Redis), so every visitor sees every signature. If the API is not
+   reachable (e.g. opening the file locally) it falls back to this browser only.
+   Shape: { id, name, color, paths: ["M x y L x y ...", ...], at } */
 const wallStore = {
-  key: 'wall-signatures',
-  load() {
-    try { return JSON.parse(localStorage.getItem(this.key)) || []; } catch (e) { return []; }
+  localKey: 'wall-signatures',
+  mineKey: 'wall-mine',
+  shared: true,
+  local() { try { return JSON.parse(localStorage.getItem(this.localKey)) || []; } catch (e) { return []; } },
+  mine() { try { return JSON.parse(localStorage.getItem(this.mineKey)) || []; } catch (e) { return []; } },
+  remember(id) { try { localStorage.setItem(this.mineKey, JSON.stringify([id, ...this.mine()].slice(0, 20))); } catch (e) {} },
+  async load() {
+    try {
+      const r = await fetch('/api/wall', { cache: 'no-store' });
+      if (!r.ok) throw new Error();
+      this.shared = true;
+      return (await r.json()).signatures || [];
+    } catch (e) {
+      this.shared = false;
+      return this.local().slice().reverse();
+    }
   },
-  save(list) {
-    try { localStorage.setItem(this.key, JSON.stringify(list.slice(-50))); } catch (e) {}
+  async add(sig) {
+    if (this.shared) {
+      const r = await fetch('/api/wall', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(sig) });
+      const data = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(data.error || 'Could not save your signature.');
+      this.remember(data.signature.id);
+      return data.signature;
+    }
+    const saved = { ...sig, id: `local-${Date.now()}`, at: Date.now() };
+    try { localStorage.setItem(this.localKey, JSON.stringify([...this.local(), saved].slice(-50))); } catch (e) {}
+    this.remember(saved.id);
+    return saved;
   },
 };
 
@@ -112,8 +134,10 @@ const wallStore = {
     return li;
   };
 
-  const render = () => {
-    row.replaceChildren(...wallStore.load().slice().reverse().map((s, i) => card(s, i === 0 && s.mine)));
+  const render = async () => {
+    const list = await wallStore.load();
+    const mine = wallStore.mine();
+    row.replaceChildren(...list.map((s) => card(s, mine.includes(s.id))));
   };
 
   // drawing
@@ -166,25 +190,29 @@ const wallStore = {
     status.textContent = 'Draw your signature, add your name, then hit Sign.';
   });
 
-  pad.addEventListener('submit', (e) => {
+  pad.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!strokes.length) { status.textContent = 'Draw something first ✍️'; return; }
-    const sig = {
-      name: pad.querySelector('.pad-name').value.trim().slice(0, 24),
-      color,
-      paths: strokes.map((s) => s.map(([x, y], i) => `${i ? 'L' : 'M'}${x} ${y}`).join(' ')),
-      at: Date.now(),
-      mine: true,
-    };
-    const list = wallStore.load();
-    list.push(sig);
-    wallStore.save(list);
-    render();
-    row.scrollTo({ left: 0, behavior: 'smooth' });
-    pad.hidden = true;
-    openBtn.hidden = false;
-    openBtn.textContent = 'Sign again';
-    status.textContent = "Thanks! You're on the wall.";
+    const saveBtn = pad.querySelector('.pad-save');
+    saveBtn.disabled = true;
+    status.textContent = 'Signing…';
+    try {
+      await wallStore.add({
+        name: pad.querySelector('.pad-name').value.trim().slice(0, 24),
+        color,
+        paths: strokes.map((s) => s.map(([x, y], i) => `${i ? 'L' : 'M'}${x} ${y}`).join(' ')),
+      });
+      await render();
+      row.scrollTo({ left: 0, behavior: 'smooth' });
+      pad.hidden = true;
+      openBtn.hidden = false;
+      openBtn.textContent = 'Sign again';
+      status.textContent = "Thanks! You're on the wall.";
+    } catch (err) {
+      status.textContent = err.message;
+    } finally {
+      saveBtn.disabled = false;
+    }
   });
 
   render();

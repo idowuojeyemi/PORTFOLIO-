@@ -32,3 +32,7 @@ The palette lives at the top of `styles.css` (`--blue`, `--mustard`, `--orange`,
 ## Publish with GitHub Pages
 
 In the repository, go to **Settings → Pages**. Set the source to **Deploy from a branch**, then choose `main` and `/ (root)`.
+
+## Sign the wall
+
+The guestbook in the footer is shared through `api/wall.js`, a Vercel serverless function that stores signatures in Upstash Redis (Vercel → Storage). It reads the `KV_REST_API_URL` / `KV_REST_API_TOKEN` (or `UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN`) variables that Vercel adds when the database is connected to the project. Each visitor can sign up to 5 times every 10 minutes, and the wall keeps the latest 300 signatures.
