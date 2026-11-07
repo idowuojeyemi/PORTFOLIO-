@@ -129,8 +129,6 @@ img, video { display: block; max-width: 100%; }
 .brands { border-block: 2px solid var(--line); background: var(--ink); color: var(--bg); padding: 14px 0; transform: rotate(-1deg); margin: 0 -10px; }
 .marquee { overflow: hidden; }
 .marquee-track { display: flex; width: max-content; animation: marquee 36s linear infinite; }
-.marquee-track span { font-family: var(--mono); font-size: 15px; letter-spacing: .2em; padding: 0 22px; white-space: nowrap; }
-.marquee-track span::after { content: "✦"; margin-left: 44px; color: var(--mustard); }
 @keyframes marquee { to { transform: translateX(-50%); } }
 
 /* SECTION HEADS */
@@ -404,3 +402,12 @@ img, video { display: block; max-width: 100%; }
   .truck-wrap { display: none; }
 }
 .hero-sub-tight { margin-top: 14px; }
+
+/* brand logo strip */
+.brands { padding: 16px 0; }
+.marquee-track .brand { display: inline-flex; align-items: center; gap: 12px; margin: 0 9px; padding: 8px 18px 8px 8px; background: #f6f2ea; color: #141210; border-radius: 12px; font-family: var(--mono); font-size: 13px; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; }
+.marquee-track .brand:not(.has-logo) { padding-left: 18px; }
+.brand img { height: 40px; width: auto; border-radius: 6px; }
+.brand > span { padding: 0; }
+.marquee:hover .marquee-track { animation-play-state: paused; }
+@media (max-width: 640px) { .brand img { height: 32px; } .marquee-track .brand { font-size: 11px; } }
