@@ -380,5 +380,27 @@ img, video { display: block; max-width: 100%; }
 
 /* hero intro */
 .hero-lead { max-width: 640px; margin: 48px auto 0; font-family: var(--display); font-weight: 700; font-size: clamp(22px, 2.4vw, 28px); line-height: 1.2; letter-spacing: -0.02em; }
-.hero-lead span { display: inline-block; color: var(--orange); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.hero-lead { cursor: default; }
+.lead-1 { display: block; }
+.lead-1 .w { display: inline-block; opacity: 0; transform: translateY(.7em) rotate(-8deg); animation: word-in .55s cubic-bezier(.3,1.7,.5,1) forwards; animation-delay: calc(.2s + var(--d) * .09s); }
+@keyframes word-in { to { opacity: 1; transform: none; } }
+.move-word { color: var(--blue); }
+.move-word span { display: inline-block; animation: wave 1.8s ease-in-out infinite; animation-delay: calc(1.1s + var(--i) * .1s); }
+@keyframes wave { 0%, 55%, 100% { transform: none; } 18% { transform: translateY(-.28em) rotate(-8deg); } 36% { transform: translateY(.06em) rotate(4deg); } }
+.lead-2 { position: relative; display: inline-block; color: var(--orange); }
+.lead-2-text { display: inline-block; clip-path: inset(-10% 100% -10% 0); animation: reveal 1.5s linear 1.1s forwards; }
+@keyframes reveal { to { clip-path: inset(-10% 0 -10% 0); } }
+.truck-wrap { position: absolute; left: 0; bottom: .02em; width: 2.1em; translate: -100% 0; opacity: 0; animation: drive 2.3s linear 1.1s forwards; pointer-events: none; }
+.truck { display: block; width: 100%; height: auto; image-rendering: pixelated; animation: bob .22s steps(2) infinite; }
+@keyframes drive {
+  0% { left: 0; translate: -100% 0; opacity: 1; }
+  65% { left: 100%; translate: -100% 0; opacity: 1; }
+  100% { left: 100%; translate: 160% 0; opacity: 0; }
+}
+@keyframes bob { 50% { transform: translateY(-1.5px); } }
+@media (prefers-reduced-motion: reduce) {
+  .lead-1 .w, .move-word span, .lead-2-text { animation: none; opacity: 1; transform: none; clip-path: none; }
+  .truck-wrap { display: none; }
+}
 .hero-sub-tight { margin-top: 14px; }

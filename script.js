@@ -313,3 +313,14 @@ const wallStore = {
   el.querySelector('.q-day').textContent = `HAPPY ${day.toUpperCase()}`;
   el.querySelector('.q-text').textContent = pool[dayOfYear % pool.length];
 })();
+
+/* Replay the hero lead animation on click */
+(() => {
+  const arm = (el) => el.addEventListener('click', () => {
+    const fresh = el.cloneNode(true);
+    el.replaceWith(fresh);
+    arm(fresh);
+  }, { once: true });
+  const lead = document.querySelector('.hero-lead');
+  if (lead) arm(lead);
+})();
