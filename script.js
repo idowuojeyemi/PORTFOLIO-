@@ -324,3 +324,54 @@ const wallStore = {
   const lead = document.querySelector('.hero-lead');
   if (lead) arm(lead);
 })();
+
+/* ---------- Folder motion (Apple-style) ----------
+   1. Depth: a folder shrinks back and dims as the next one slides over it.
+   2. Entrance: copy and film still glide in when a folder comes into view.
+   3. Tilt: the film still leans toward the pointer with a light sheen. */
+(() => {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const cards = [...document.querySelectorAll('.reel-card')];
+  if (!cards.length) return;
+  document.documentElement.classList.add('motion');
+
+  const seen = new IntersectionObserver((entries) => entries.forEach((e) => {
+    if (e.isIntersecting) { e.target.classList.add('in-view'); seen.unobserve(e.target); }
+  }), { threshold: 0.25 });
+  cards.forEach((c) => seen.observe(c));
+
+  const desktop = matchMedia('(min-width: 641px)');
+  let ticking = false;
+  const depth = () => {
+    ticking = false;
+    const vh = innerHeight;
+    cards.forEach((card, i) => {
+      const next = cards[i + 1];
+      let p = 0;
+      if (next && desktop.matches) {
+        const t = next.getBoundingClientRect().top;
+        p = Math.min(1, Math.max(0, (vh - t) / (vh - 80)));
+      }
+      card.style.transform = p ? `scale(${(1 - p * 0.06).toFixed(4)})` : '';
+      card.style.filter = p ? `brightness(${(1 - p * 0.3).toFixed(3)})` : '';
+    });
+  };
+  const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(depth); } };
+  addEventListener('scroll', onScroll, { passive: true });
+  addEventListener('resize', onScroll);
+  depth();
+
+  if (!matchMedia('(pointer: fine)').matches) return;
+  document.querySelectorAll('.reel-card .still').forEach((still) => {
+    still.addEventListener('pointermove', (e) => {
+      if (still.querySelector('.playing')) { still.style.transform = ''; still.classList.remove('tilting'); return; }
+      const r = still.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+      still.classList.add('tilting');
+      still.style.setProperty('--mx', `${(x * 100).toFixed(1)}%`);
+      still.style.setProperty('--my', `${(y * 100).toFixed(1)}%`);
+      still.style.transform = `perspective(900px) rotateX(${((0.5 - y) * 10).toFixed(2)}deg) rotateY(${((x - 0.5) * 12).toFixed(2)}deg) scale(1.03)`;
+    });
+    still.addEventListener('pointerleave', () => { still.classList.remove('tilting'); still.style.transform = ''; });
+  });
+})();
