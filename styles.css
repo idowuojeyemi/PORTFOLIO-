@@ -411,3 +411,4 @@ img, video { display: block; max-width: 100%; }
 .brand > span { padding: 0; }
 .marquee:hover .marquee-track { animation-play-state: paused; }
 @media (max-width: 640px) { .brand img { height: 32px; } .marquee-track .brand { font-size: 11px; } }
+.brand img { max-width: 120px; object-fit: contain; }
